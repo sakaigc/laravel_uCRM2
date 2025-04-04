@@ -29,4 +29,9 @@ class InertiaTestController extends Controller
         $inertiaTest->save();
         return to_route('inertia.index');
     }
+
+    public function create()
+    {
+        return Inertia::render('Inertia/Create');
+    } 
 }
