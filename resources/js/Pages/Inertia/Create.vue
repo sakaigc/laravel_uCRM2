@@ -8,11 +8,16 @@ const form = reactive({
 const submitFunction = () => {
  Inertia.post('/inertia', form)
 }
+defineProps({
+ errors: Object
+}) 
 </script>
 <template>
  <form @submit.prevent="submitFunction">
- <input type="text" name="title" v-model="form.title"><br>
+ <input type="text" name="title" v-model="form.title">
+ <div v-if="errors.title">{{ errors.title }}</div><br>
  <input type="text" name="content" v-model="form.content">
+ <div v-if="errors.content">{{ errors.content }}</div><br>
  <button>送信</button>
  </form>
 </template>
