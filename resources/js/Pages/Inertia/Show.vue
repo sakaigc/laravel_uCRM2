@@ -4,5 +4,6 @@ defineProps({ // 変数の受け取り
 })
 </script>
 <template>
- {{ id }} // propsで渡ってきた変数
+ {{ id }}  
+ <!-- propsで渡ってきた変数 -->
 </template>

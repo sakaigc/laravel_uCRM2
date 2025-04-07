@@ -10,14 +10,16 @@ class InertiaTestController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Inertia/Index');
+        return Inertia::render('Inertia/Index', [
+            'blogs' => InertiaTest::all()
+        ]);
     }
 
     public function show($id)
     {
-        // dd($id);
         return Inertia::render('Inertia/Show', [
-        'id' => $id,
+            'id' => $id,
+            'blog' => InertiaTest::findOrFail($id)  //動画で無かったので追記
         ]);
     }
 
