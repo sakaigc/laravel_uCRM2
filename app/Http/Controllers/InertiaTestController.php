@@ -46,13 +46,9 @@ class InertiaTestController extends Controller
 
     public function delete($id)
     {
-        $book = InertiaTest::findOrFail($id);
-        $book->delete();
+        $item->delete();
 
-        return to_route('inertia.index')
-        ->with([
-            'message' => '削除しました。'
-        ]);
-
+        return redirect()->route('items.index')
+            ->with('message', '商品を削除しました！');       
     }
 }

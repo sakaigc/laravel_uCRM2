@@ -33,6 +33,7 @@ Route::get('/component-test', function () {
 Route::resource('items', ItemController::class)
 ->middleware(['auth', 'verified']);
 
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),

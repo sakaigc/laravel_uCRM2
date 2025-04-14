@@ -1,12 +1,13 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { reactive } from 'vue'
 import { Inertia } from '@inertiajs/inertia'
-const form = reactive({
- name: null,
- memo: null,
- price: null
+import { useForm } from '@inertiajs/vue3';
+
+const form = useForm({
+ name: '',
+ memo: '',
+ price: '',
 })
 const submitFunction = () => {
  Inertia.post('/inertia', form)
@@ -16,8 +17,8 @@ defineProps({
 }) 
 
 const storeItem = () => {
- Inertia.post('/items', form)
-}
+  form.post(route('items.store'));
+};
 </script>
 
 <template>
@@ -40,7 +41,7 @@ const storeItem = () => {
                                 <div class="relative">
                                     <label for="name" class="leading-7 text-sm text-gray-600">名前</label>
                                     <input type="text" id="name" name="name" v-model="form.name" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                    <div v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</div>
+                                    <div v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</div>
 
                                 </div>
                                 </div>
@@ -48,7 +49,7 @@ const storeItem = () => {
                                 <div class="relative">
                                     <label for="memo" class="leading-7 text-sm text-gray-600">メモ</label>
                                     <textarea id="memo" name="memo" v-model="form.memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
-                                    <div v-if="errors.memo" class="text-red-500 text-sm mt-1">{{ errors.memo }}</div>
+                                    <div v-if="form.errors.memo" class="text-red-500 text-sm mt-1">{{ errors.memo }}</div>
 
                                 </div>
                                 </div>
@@ -56,7 +57,7 @@ const storeItem = () => {
                                 <div class="relative">
                                     <label for="price" class="leading-7 text-sm text-gray-600">商品価格</label>
                                     <input type="number" id="price" name="price" v-model="form.price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                    <div v-if="errors.price" class="text-red-500 text-sm mt-1">{{ errors.price }}</div>
+                                    <div v-if="form.errors.price" class="text-red-500 text-sm mt-1">{{ errors.price }}</div>
                                 </div>
                                 </div>
                                 <div class="p-2 w-full">

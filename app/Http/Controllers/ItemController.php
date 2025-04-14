@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
-use Inertia\Inertia; 
-
+use Inertia\Inertia; ;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect; // ★これ追加！
+use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Item::class, 'item');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -45,11 +51,13 @@ class ItemController extends Controller
             'name' => $request->name,
             'memo' => $request->memo,
             'price' => $request->price,
-           ]);
-        return to_route('items.index') ->with([
-            'message' => '登録しました。' ,
-            'status' => 'success' // 追記
-            ]);
+        ]);
+        
+        return to_route('items.index')
+        ->with([
+        'message' => '登録しました。' ,
+        'status' => 'success'
+        ]);
     }
 
     /**
@@ -60,7 +68,10 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        return Inertia::render('Items/Show',
+        [
+        'item' => $item
+        ]);
     }
 
     /**
@@ -69,9 +80,11 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function edit(Item $item)
+    public function edit(Request $request, Item $item)
     {
-        //
+        return Inertia::render('Items/Edit', [
+            'item' => $item
+        ]);
     }
 
     /**
@@ -83,7 +96,17 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        //
+        $item->name = $request->name;
+        $item->memo = $request->memo;
+        $item->price = $request->price;
+        $item->is_selling = $request->is_selling;
+        $item->save();
+
+        return to_route('items.index')
+            ->with([
+                'message' => '商品を更新しました！',
+                'status' => 'success'
+            ]);
     }
 
     /**
@@ -94,6 +117,12 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        $item->delete();
+
+        return redirect()->route('items.index')
+        ->with([
+            'message' => '商品を削除しました！',
+            'status' => 'danger'
+        ]);
     }
 }

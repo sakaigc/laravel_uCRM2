@@ -18,7 +18,7 @@ class ItemPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class ItemPolicy
      */
     public function view(User $user, Item $item)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class ItemPolicy
      */
     public function update(User $user, Item $item)
     {
-        //
+        return true;  // 誰でも編集できるように一時設定！
     }
 
     /**
@@ -65,7 +65,7 @@ class ItemPolicy
      */
     public function delete(User $user, Item $item)
     {
-        //
+        return true;
     }
 
     /**
@@ -77,7 +77,7 @@ class ItemPolicy
      */
     public function restore(User $user, Item $item)
     {
-        //
+        return true;
     }
 
     /**
@@ -89,6 +89,6 @@ class ItemPolicy
      */
     public function forceDelete(User $user, Item $item)
     {
-        //
+        return true;
     }
 }

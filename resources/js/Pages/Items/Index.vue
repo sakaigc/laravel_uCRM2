@@ -2,7 +2,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import FlashMessage from '@/Components/FlashMessage.vue';
+import { usePage } from '@inertiajs/vue3' // ★ここ追加！
+
 defineProps({ items: Array })
+
+const page = usePage(); // ★ページ情報を取得
 </script>
 
 <template>
@@ -15,6 +19,12 @@ defineProps({ items: Array })
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                     <!-- ★ここに追加 -->
+                    <div v-if="page.props?.flash && page.props.flash.message" class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                        {{ page.props.flash.message }}
+                    </div>
+
+                    <!-- ★ここまで -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <section class="text-gray-600 body-font">
                         <div class="container px-5 py-8 mx-auto">
@@ -36,7 +46,11 @@ defineProps({ items: Array })
                                 </thead>
                                 <tbody>
                                     <tr v-for="item in items" :key="item.id">
-                                    <td class="border-t-2 border-gray-200 px-4 py-3">{{ item.id }}</td>
+                                    <td class="border-t-2 border-gray-200 px-4 py-3">
+                                        <Link class="text-blue-400" :href="route('items.show', { item:item.id })">
+                                             {{ item.id }}
+                                        </Link>
+                                    </td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3">{{ item.name }}</td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3">{{ item.price }}</td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3">
