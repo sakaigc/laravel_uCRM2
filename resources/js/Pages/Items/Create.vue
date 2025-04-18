@@ -8,13 +8,14 @@ const form = useForm({
  name: '',
  memo: '',
  price: '',
+ is_selling: true, // 追加
 })
 const submitFunction = () => {
  Inertia.post('/inertia', form)
 }
 defineProps({
  errors: Object
-}) 
+})
 
 const storeItem = () => {
   form.post(route('items.store'));
@@ -61,8 +62,14 @@ const storeItem = () => {
                                 </div>
                                 </div>
                                 <div class="p-2 w-full">
+                                <label class="text-sm text-gray-600">販売中</label>
+                                <input type="checkbox" v-model="form.is_selling" />
+                                </div>
+                                <div class="p-2 w-full">
                                 <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">商品登録</button>
                                 </div>
+
+
                             </div>
                             </div>
                         </div>
