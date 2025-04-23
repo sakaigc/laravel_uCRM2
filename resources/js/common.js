@@ -3,5 +3,13 @@ const nl2br = (str) => {
     res = res.replace(/(\n|\r)/g, "<br>");
     return res;
    }
-
 export { nl2br } // 別のファイルで使えるようにexportする
+
+const getToday = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = ("0"+(today.getMonth()+1)).slice(-2);
+    const dd = ("0"+today.getDate()).slice(-2);
+    return yyyy+'-'+mm+'-'+dd;
+   }
+export { getToday }

@@ -22,4 +22,13 @@ export default defineConfig({
             '@': '/resources/js',
         },
     },
+    server: {
+        proxy: {
+          '/api/zipcloud': {
+            target: 'https://zipcloud.ibsnet.co.jp',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api\/zipcloud/, ''),
+          },
+        },
+      },
 });

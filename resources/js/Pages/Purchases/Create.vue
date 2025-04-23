@@ -32,7 +32,7 @@ onMounted(() => {
   })
 })
 
-const quantity = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+const quantity = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 const totalPrice = computed(() => {
   let total = 0
@@ -58,6 +58,16 @@ const storePurchase = () => {
   <div class="p-6 max-w-4xl mx-auto">
     <h1 class="text-2xl font-bold mb-4">🛒 購入作成フォーム</h1>
 
+    <!-- 成功メッセージ -->
+    <div v-if="$page.props.flash.message" class="bg-green-100 text-green-800 p-3 rounded mb-4">
+    {{ $page.props.flash.message }}
+    </div>
+
+    <!-- エラーメッセージ -->
+    <div v-if="$page.props.flash.error" class="bg-red-100 text-red-800 p-3 rounded mb-4">
+    {{ $page.props.flash.error }}
+
+    </div>
     <!-- 購入日 -->
     <div class="mb-4">
       <label>📅 購入日</label><br />
@@ -95,9 +105,9 @@ const storePurchase = () => {
             <td class="border p-2">{{ item.name }}</td>
             <td class="border p-2">¥{{ item.price.toLocaleString() }}</td>
             <td class="border p-2">
-              <select v-model="item.quantity" class="border px-2 py-1 rounded">
-                <option v-for="q in quantity" :value="q" :key="q">{{ q }}</option>
-              </select>
+                <select v-model="item.quantity" class="..." >
+                    <option v-for="q in quantity" :value="q" :key="q">{{ q }}</option>
+                </select>
             </td>
             <td class="border p-2 text-right">
               ¥{{ (item.price * item.quantity).toLocaleString() }}
@@ -110,16 +120,6 @@ const storePurchase = () => {
     <!-- 合計金額 -->
     <div class="text-right text-lg font-bold mb-6">
       合計：¥{{ totalPrice.toLocaleString() }} 円
-    </div>
-
-    <!-- 成功メッセージ -->
-    <div v-if="$page.props.flash.message" class="bg-green-100 text-green-800 p-3 rounded mb-4">
-    {{ $page.props.flash.message }}
-    </div>
-
-    <!-- エラーメッセージ -->
-    <div v-if="$page.props.flash.error" class="bg-red-100 text-red-800 p-3 rounded mb-4">
-    {{ $page.props.flash.error }}
     </div>
 
     <!-- 登録ボタン -->

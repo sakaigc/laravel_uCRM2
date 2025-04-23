@@ -1,35 +1,23 @@
-import './bootstrap';
-import '../css/app.css';
+import { createApp, h } from 'vue'
+import { createInertiaApp } from '@inertiajs/vue3'
+import { ZiggyVue } from 'ziggy-js'
+import Layout from '@/Layouts/AuthenticatedLayout.vue'
+import './micromodal'
+import '../css/micromodal.css'
+import '../css/app.css'
 
-import axios from 'axios';
-
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-const token = document.head.querySelector('meta[name="csrf-token"]');
-
-if (token) {
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;  // ←ここが超重要！！
-} else {
-    console.error('CSRF token not found.');
-}
-
-import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/inertia-vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
-
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
-    setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .use(ZiggyVue, Ziggy)
-            .mount(el);
-    },
-    progress: {
-        color: '#4B5563',
-    },
-});
+  resolve: name => {
+    const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
+    let page = pages[`./Pages/${name}.vue`]
+    page.default.layout = page.default.layout || Layout
+    return page
+  },
+  setup({ el, App, props, plugin }) {
+    createApp({ render: () => h(App, props) })
+      .use(plugin)
+      .use(ZiggyVue)
+      .mount(el)
+  },
+})

@@ -1,7 +1,7 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/inertia-vue3';
-import { useForm } from '@inertiajs/inertia-vue3'; // ★ここ追加
+import { Head } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3'; // ★ここ追加
 
 const props = defineProps({
   item: Object

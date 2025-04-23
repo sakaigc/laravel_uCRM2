@@ -7,6 +7,9 @@ use Inertia\Inertia;
 use App\Http\Controllers\InertiaTestController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CustomerController;
+use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\PurchaseController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +20,11 @@ use App\Http\Controllers\CustomerController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// ⭐ これを resource の上に書くことで、Inertia専用のcreateルートを明示的に先に定義
+Route::get('/customers/create', [CustomerController::class, 'create'])
+    ->name('customers.create')
+    ->middleware(['auth', 'verified']);
+
 Route::get('/inertia-test', function () {
     return Inertia::render('InertiaTest');
     }
@@ -32,8 +40,22 @@ Route::get('/component-test', function () {
    });
 Route::resource('items', ItemController::class)
 ->middleware(['auth', 'verified']);
+
+
 Route::resource('customers', CustomerController::class)
+    ->except(['show', 'edit', 'update', 'destroy'])
+    ->middleware(['auth', 'verified']);
+
+Route::resource('purchases', PurchaseController::class)
 ->middleware(['auth', 'verified']);
+
+Route::get('/api/zipcloud/search', function (\Illuminate\Http\Request $request) {
+    $zipcode = $request->query('zipcode');
+    $response = Http::get("https://zipcloud.ibsnet.co.jp/api/search", [
+        'zipcode' => $zipcode,
+    ]);
+    return $response->json();
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

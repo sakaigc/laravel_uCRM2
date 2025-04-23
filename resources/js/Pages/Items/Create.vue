@@ -1,82 +1,65 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import { Inertia } from '@inertiajs/inertia'
-import { useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3'
 
 const form = useForm({
- name: '',
- memo: '',
- price: '',
- is_selling: true, // 追加
-})
-const submitFunction = () => {
- Inertia.post('/inertia', form)
-}
-defineProps({
- errors: Object
+  name: '',
+  memo: '',
+  price: '',
+  is_selling: true,
 })
 
 const storeItem = () => {
-  form.post(route('items.store'));
-};
+  form.post(route('items.store'))
+}
 </script>
 
 <template>
-    <Head title="商品登録" />
+  <Head title="商品登録" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">商品一覧</h2>
-        </template>
+  <!-- ヘッダー -->
+  <div class="py-6 px-4 sm:px-6 lg:px-8 bg-white shadow mb-4">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">📦 商品登録</h2>
+  </div>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <section class="text-gray-600 body-font relative">
-                        <form @submit.prevent="storeItem">
-                        <div class="container px-5 py-8 mx-auto">
-                            <div class="lg:w-1/2 md:w-2/3 mx-auto">
-                            <div class="flex flex-wrap -m-2">
-                                <div class="p-2 w-full">
-                                <div class="relative">
-                                    <label for="name" class="leading-7 text-sm text-gray-600">名前</label>
-                                    <input type="text" id="name" name="name" v-model="form.name" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                    <div v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</div>
+  <div class="py-12">
+    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+      <div class="bg-white p-8 rounded shadow-sm">
+        <form @submit.prevent="storeItem" class="space-y-5">
+          <!-- 名前 -->
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">名前</label>
+            <input id="name" v-model="form.name" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+            <div v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ form.errors.name }}</div>
+          </div>
 
-                                </div>
-                                </div>
-                                <div class="p-2 w-full">
-                                <div class="relative">
-                                    <label for="memo" class="leading-7 text-sm text-gray-600">メモ</label>
-                                    <textarea id="memo" name="memo" v-model="form.memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
-                                    <div v-if="form.errors.memo" class="text-red-500 text-sm mt-1">{{ errors.memo }}</div>
+          <!-- メモ -->
+          <div>
+            <label for="memo" class="block text-sm font-medium text-gray-700">メモ</label>
+            <textarea id="memo" v-model="form.memo" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+            <div v-if="form.errors.memo" class="text-red-500 text-sm mt-1">{{ form.errors.memo }}</div>
+          </div>
 
-                                </div>
-                                </div>
-                                <div class="p-2 w-full">
-                                <div class="relative">
-                                    <label for="price" class="leading-7 text-sm text-gray-600">商品価格</label>
-                                    <input type="number" id="price" name="price" v-model="form.price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                    <div v-if="form.errors.price" class="text-red-500 text-sm mt-1">{{ errors.price }}</div>
-                                </div>
-                                </div>
-                                <div class="p-2 w-full">
-                                <label class="text-sm text-gray-600">販売中</label>
-                                <input type="checkbox" v-model="form.is_selling" />
-                                </div>
-                                <div class="p-2 w-full">
-                                <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">商品登録</button>
-                                </div>
+          <!-- 価格 -->
+          <div>
+            <label for="price" class="block text-sm font-medium text-gray-700">価格</label>
+            <input id="price" v-model="form.price" type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+            <div v-if="form.errors.price" class="text-red-500 text-sm mt-1">{{ form.errors.price }}</div>
+          </div>
 
+          <!-- 販売中 -->
+          <div class="flex items-center">
+            <input id="is_selling" type="checkbox" v-model="form.is_selling" class="mr-2" />
+            <label for="is_selling" class="text-sm text-gray-700">販売中</label>
+          </div>
 
-                            </div>
-                            </div>
-                        </div>
-                        </form>
-                        </section>
-                </div>
-            </div>
-        </div>
-    </AuthenticatedLayout>
+          <!-- ボタン -->
+          <div class="text-center">
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded shadow">
+              商品登録
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
